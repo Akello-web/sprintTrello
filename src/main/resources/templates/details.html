@@ -133,9 +133,11 @@
                             (task.status==1?'text-warning':
                             (task.status==2?'text-success':
                             (task.status==3?'text-danger':'')))}"></td>
+
                     <td>
-                        <a th:href="@{'/details/' + ${task.id}}" class="btn btn-primary end">View More</a>
+                        <a th:href="@{'/detailsTasks/' + ${task.id}}" class="btn btn-primary">View More</a>
                     </td>
+
                 </tr>
                 </tbody>
             </table>

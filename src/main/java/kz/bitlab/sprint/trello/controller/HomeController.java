@@ -49,9 +49,26 @@ public class HomeController {
         return "details";
     }
 
+    @GetMapping(value = "/detailsTasks/{taskId}")
+    public String taskDetails(@PathVariable(name = "taskId") Long id, Model model){
+
+        Tasks tasks = taskRepository.findById(id).orElse(null);
+        model.addAttribute("taskById", tasks);
+        return "detailsTasks";
+    }
+
     @PostMapping(value = "/add-task")
     public String addTask(Tasks task, @RequestParam(name = "folder_id") Long folderId){
         task.setStatus(0);
+        Folders folder = folderRepository.findById(folderId).orElse(null);
+        task.setFolder(folder);
+        taskRepository.save(task);
+        return "redirect:/details/" + folderId;
+    }
+
+    @PostMapping(value = "/save-task")
+    public String saveTask(Tasks task, @RequestParam(name = "folder_id") Long folderId){
+
         Folders folder = folderRepository.findById(folderId).orElse(null);
         task.setFolder(folder);
         taskRepository.save(task);
@@ -93,4 +110,6 @@ public class HomeController {
         folderRepository.save(folders);
         return "redirect:/details/" + folderId;
     }
+
+
 }
