@@ -129,10 +129,10 @@
                             (task.status==1?'IN TEST':
                             (task.status==2?'DONE':
                             (task.status==3?'FAILED':'')))}"
-                            th:class=" ${task.status==0?'text-primary':
-                            (task.status==1?'text-warning':
-                            (task.status==2?'text-success':
-                            (task.status==3?'text-danger':'')))}"></td>
+                            th:class=" ${task.status==0?'text-primary fw-bold':
+                            (task.status==1?'text-warning fw-bold':
+                            (task.status==2?'text-success fw-bold':
+                            (task.status==3?'text-danger fw-bold':'')))}"></td>
 
                     <td>
                         <a th:href="@{'/detailsTasks/' + ${task.id}}" class="btn btn-primary">View More</a>

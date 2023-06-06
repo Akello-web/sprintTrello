@@ -18,7 +18,7 @@
                     <div class="col-12">
                         <input class="form-control" type="text" name="title"
                                placeholder="Insert Name"
-                               th:value="${taskById.title}">
+                               th:value="${taskById.title}" th:readonly="${taskById.status==2 || taskById==3}">
                     </div>
                 </div>
                 <div class="row mt-4">
@@ -28,11 +28,11 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
-                        <select class="form-select" name="status">
-                            <option class="text-primary" value="0">TO DO</option>
-                            <option class="text-warning" value="1">IN TEST</option>
-                            <option class="text-success" value="2">DONE</option>
-                            <option class="text-danger" value="3">FAILED</option>
+                        <select class="form-select" name="status" th:readonly="${taskById.status==2 || taskById==3}">
+                            <option class="text-primary" value="0" th:selected="${taskById.status == 0}">TO DO</option>
+                            <option class="text-warning" value="1" th:selected="${taskById.status == 1}">IN TEST</option>
+                            <option class="text-success" value="2" th:selected="${taskById.status == 2}">DONE</option>
+                            <option class="text-danger" value="3" th:selected="${taskById.status == 3}">FAILED</option>
                         </select>
                     </div>
                 </div>
@@ -43,12 +43,15 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
-                        <textarea class="form-control" name="description" th:text="${taskById.description}"></textarea>
+                        <textarea class="form-control" name="description"
+                                  th:text="${taskById.description}"
+                                  th:readonly="${taskById.status==2 || taskById==3}"></textarea>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <div class="row mt-3" >
                     <div class="col-12">
-                        <button class="btn btn-success btn-sm">SAVE TASK</button>
+                        <button class="btn btn-success btn-sm"
+                                th:if="${taskById.status==0 || taskById.status==1}">SAVE TASK</button>
                         <button type="button" class="btn btn-sm btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#delete-btn">
                             DELETE TASK
                         </button>
