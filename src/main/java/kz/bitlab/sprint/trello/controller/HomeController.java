@@ -7,6 +7,9 @@ import kz.bitlab.sprint.trello.repository.CategoryRepository;
 import kz.bitlab.sprint.trello.repository.CommentsRepository;
 import kz.bitlab.sprint.trello.repository.FolderRepository;
 import kz.bitlab.sprint.trello.repository.TaskRepository;
+import kz.bitlab.sprint.trello.service.CategoryService;
+import kz.bitlab.sprint.trello.service.FolderService;
+import kz.bitlab.sprint.trello.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,36 +25,37 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final FolderRepository folderRepository;
-    private final CategoryRepository categoryRepository;
-    private final TaskRepository taskRepository;
     private final CommentsRepository commentsRepository;
+
+    private final FolderService folderService;
+    private final TaskService taskService;
+    private final CategoryService categoryService;
 
     @GetMapping(value = "/")
     public String mainPage(Model model){
-        model.addAttribute("folders", folderRepository.findAll());
+        model.addAttribute("folders", folderService.getFolders());
         return "index";
     }
 
     @PostMapping(value = "/add-folder")
     public String addFolder(Folders folder){
-        folderRepository.save(folder);
+        folderService.addFolder(folder);
         return "redirect:/";
     }
     @GetMapping(value = "/details/{folderId}")
     public String folderDetails(@PathVariable(name = "folderId") Long id, Model model){
-        Folders folder = folderRepository.findById(id).orElse(null);
+        Folders folder = folderService.getFolder(id);
         model.addAttribute("folderById", folder);
 
-        model.addAttribute("categories", categoryRepository.findAll());
-        model.addAttribute("tasks", taskRepository.findAll());
+        model.addAttribute("categories", categoryService.getCategories());
+        model.addAttribute("tasks", taskService.getTasks());
         return "details";
     }
 
     @GetMapping(value = "/detailsTasks/{taskId}")
     public String taskDetails(@PathVariable(name = "taskId") Long id, Model model){
 
-        Tasks tasks = taskRepository.findById(id).orElse(null);
+        Tasks tasks = taskService.getTask(id);
         model.addAttribute("taskById", tasks);
         return "detailsTasks";
     }
@@ -59,26 +63,26 @@ public class HomeController {
     @PostMapping(value = "/add-task")
     public String addTask(Tasks task, @RequestParam(name = "folder_id") Long folderId){
         task.setStatus(0);
-        Folders folder = folderRepository.findById(folderId).orElse(null);
+        Folders folder = folderService.getFolder(folderId);
         task.setFolder(folder);
-        taskRepository.save(task);
+        taskService.addTask(task);
         return "redirect:/details/" + folderId;
     }
 
     @PostMapping(value = "/save-task")
     public String saveTask(Tasks task, @RequestParam(name = "folder_id") Long folderId){
 
-        Folders folder = folderRepository.findById(folderId).orElse(null);
+        Folders folder = folderService.getFolder(folderId);
         task.setFolder(folder);
-        taskRepository.save(task);
+        taskService.saveTask(task);
         return "redirect:/details/" + folderId;
     }
 
     @PostMapping(value = "/add-category")
     public String addCategory(@RequestParam(name = "folder_id") Long folderId,
                               @RequestParam(name = "category_id") Long categoryId){
-        Folders folders = folderRepository.findById(folderId).orElse(null);
-        TaskCategories categories = categoryRepository.findById(categoryId).orElse(null);
+        Folders folders = folderService.getFolder(folderId);
+        TaskCategories categories = categoryService.getCategory(categoryId);
 
         if(folders.getTaskCategories()!=null && folders.getTaskCategories().size()>0){
             if(!folders.getTaskCategories().contains(categories)) {
@@ -90,15 +94,15 @@ public class HomeController {
             folders.setTaskCategories(categoriesList);
         }
 
-        folderRepository.save(folders);
+        folderService.saveFolder(folders);
         return "redirect:/details/" + folderId;
     }
 
     @PostMapping(value = "/drop-category")
     public String dropCategory(@RequestParam(name = "folder_id") Long folderId,
                               @RequestParam(name = "category_id") Long categoryId){
-        Folders folders = folderRepository.findById(folderId).orElse(null);
-        TaskCategories categories = categoryRepository.findById(categoryId).orElse(null);
+        Folders folders = folderService.getFolder(folderId);
+        TaskCategories categories = categoryService.getCategory(categoryId);
 
         if(folders.getTaskCategories()!=null && folders.getTaskCategories().size()>0){
 
@@ -106,26 +110,26 @@ public class HomeController {
 
         }
 
-        folderRepository.save(folders);
+        folderService.saveFolder(folders);
         return "redirect:/details/" + folderId;
     }
 
     @PostMapping(value = "/delete-task")
     public String deleteTask(@RequestParam(name = "id") Long id,
                              @RequestParam(name = "folder_id") Long folderId){
-        taskRepository.deleteById(id);
+        taskService.deleteTask(id);
         return "redirect:/details/" + folderId;
     }
 
     @GetMapping(value = "/categories-page")
     public String categoryPage(Model model){
-        model.addAttribute("cats", categoryRepository.findAll());
+        model.addAttribute("cats", categoryService.getCategories());
         return "categoryPage";
     }
 
     @PostMapping(value = "/add-category-db")
     public String addNewCategory(TaskCategories category){
-        categoryRepository.save(category);
+        categoryService.addCategory(category);
         return "redirect:/categories-page";
     }
 
