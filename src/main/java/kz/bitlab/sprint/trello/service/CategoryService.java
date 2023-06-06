@@ -25,5 +25,12 @@ public class CategoryService {
         return categoryRepository.save(cat);
     }
 
+    public TaskCategories saveCategory(TaskCategories cat){
+        return categoryRepository.save(cat);
+    }
+
+    public void deleteCategory(Long id){
+        categoryRepository.deleteById(id);
+    }
 
 }

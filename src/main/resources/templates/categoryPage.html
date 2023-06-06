@@ -15,7 +15,7 @@
             </div>
 
             <!-- Modal -->
-            <div class="modal fade w-75" id="add-category-btn" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="add-category-btn" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -50,12 +50,16 @@
                 <tr>
                     <th>ID:</th>
                     <th>NAME:</th>
+                    <th>DETAILS:</th>
                 </tr>
                 </thead>
                 <tbody >
                 <tr th:each = "cat : ${cats}">
                     <td th:text="${cat.id}"></td>
                     <td th:text="${cat.name}"></td>
+                    <td>
+                        <a th:href="@{'/detailsCats/' + ${cat.id}}" class="btn btn-sm btn-primary">Details</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

@@ -60,6 +60,14 @@ public class HomeController {
         return "detailsTasks";
     }
 
+    @GetMapping(value = "/detailsCats/{catId}")
+    public String catDetails(@PathVariable(name = "catId") Long id, Model model){
+
+        TaskCategories categories = categoryService.getCategory(id);
+        model.addAttribute("categoryById", categories);
+        return "detailsCategory";
+    }
+
     @PostMapping(value = "/add-task")
     public String addTask(Tasks task, @RequestParam(name = "folder_id") Long folderId){
         task.setStatus(0);
@@ -76,6 +84,12 @@ public class HomeController {
         task.setFolder(folder);
         taskService.saveTask(task);
         return "redirect:/details/" + folderId;
+    }
+
+    @PostMapping(value = "/save-category")
+    public String saveCategory(TaskCategories categories){
+        categoryService.saveCategory(categories);
+        return "redirect:/categories-page";
     }
 
     @PostMapping(value = "/add-category")
@@ -119,6 +133,12 @@ public class HomeController {
                              @RequestParam(name = "folder_id") Long folderId){
         taskService.deleteTask(id);
         return "redirect:/details/" + folderId;
+    }
+
+    @PostMapping(value = "/delete-category")
+    public String deleteCategory(@RequestParam(name = "id") Long id){
+        categoryService.deleteCategory(id);
+        return "redirect:/categories-page";
     }
 
     @GetMapping(value = "/categories-page")
