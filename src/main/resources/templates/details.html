@@ -13,9 +13,17 @@
                         <h5 class="card-title" th:text="${folderById.name}"></h5>
                         <div class="d-flex flex-wrap">
                         <div th:each="cats : ${folderById.taskCategories}" class="me-1">
-                                <a th:href="@{'#'}" class="btn btn-sm btn-primary" th:text="${cats.name}"></a>
-                        </div>
 
+                            <form th:action="@{'/drop-category'}" method="post">
+                                <input type="hidden" name="folder_id" th:value="${folderById.id}">
+                                <input type="hidden" name="category_id" th:value="${cats.id}">
+                                <div class="btn btn-sm btn-primary">
+                                    <span th:text="${cats.name}"></span>
+                                    <button class="ms-1 btn btn-sm p-0" style="color: white">X</button>
+                                </div>
+                            </form>
+
+                        </div>
                         <button type="button" class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#add-category-btn">
                             +Add Category
                         </button>

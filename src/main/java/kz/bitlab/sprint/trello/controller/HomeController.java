@@ -77,4 +77,20 @@ public class HomeController {
         folderRepository.save(folders);
         return "redirect:/details/" + folderId;
     }
+
+    @PostMapping(value = "/drop-category")
+    public String dropCategory(@RequestParam(name = "folder_id") Long folderId,
+                              @RequestParam(name = "category_id") Long categoryId){
+        Folders folders = folderRepository.findById(folderId).orElse(null);
+        TaskCategories categories = categoryRepository.findById(categoryId).orElse(null);
+
+        if(folders.getTaskCategories()!=null && folders.getTaskCategories().size()>0){
+
+            folders.getTaskCategories().remove(categories);
+
+        }
+
+        folderRepository.save(folders);
+        return "redirect:/details/" + folderId;
+    }
 }
