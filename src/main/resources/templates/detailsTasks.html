@@ -62,6 +62,7 @@
                     <div class="modal-content">
                         <form th:action="@{'/delete-task'}" method="post">
                             <input type="hidden" name="id" th:value="${taskById.id}">
+                            <input type="hidden" name="folder_id" th:value="${taskById.folder.id}">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

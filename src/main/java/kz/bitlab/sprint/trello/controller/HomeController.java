@@ -38,7 +38,6 @@ public class HomeController {
         folderRepository.save(folder);
         return "redirect:/";
     }
-
     @GetMapping(value = "/details/{folderId}")
     public String folderDetails(@PathVariable(name = "folderId") Long id, Model model){
         Folders folder = folderRepository.findById(id).orElse(null);
@@ -111,5 +110,23 @@ public class HomeController {
         return "redirect:/details/" + folderId;
     }
 
+    @PostMapping(value = "/delete-task")
+    public String deleteTask(@RequestParam(name = "id") Long id,
+                             @RequestParam(name = "folder_id") Long folderId){
+        taskRepository.deleteById(id);
+        return "redirect:/details/" + folderId;
+    }
+
+    @GetMapping(value = "/categories-page")
+    public String categoryPage(Model model){
+        model.addAttribute("cats", categoryRepository.findAll());
+        return "categoryPage";
+    }
+
+    @PostMapping(value = "/add-category-db")
+    public String addNewCategory(TaskCategories category){
+        categoryRepository.save(category);
+        return "redirect:/categories-page";
+    }
 
 }
