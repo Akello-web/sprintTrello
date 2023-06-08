@@ -14,14 +14,35 @@
                         <div class="d-flex flex-wrap">
                         <div th:each="cats : ${folderById.taskCategories}" class="me-1">
 
-                            <form th:action="@{'/drop-category'}" method="post">
-                                <input type="hidden" name="folder_id" th:value="${folderById.id}">
-                                <input type="hidden" name="category_id" th:value="${cats.id}">
-                                <div class="btn btn-sm btn-primary">
-                                    <span th:text="${cats.name}"></span>
-                                    <button class="ms-1 btn btn-sm p-0" style="color: white">X</button>
+                            <div class="btn btn-sm btn-primary">
+                                <span th:text="${cats.name}"></span>
+                                <button type="button" class="ms-1 btn btn-sm p-0" data-bs-toggle="modal" data-bs-target="#delete-btn" style="color: white">X</button>
+                            </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="delete-btn" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form th:action="@{'/drop-category'}" method="post">
+                                            <input type="hidden" name="folder_id" th:value="${folderById.id}">
+                                            <input type="hidden" name="category_id" th:value="${cats.id}">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                DO YOU WANT TO REMOVE CATEGORY?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button class="btn btn-danger">REMOVE</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
+
 
                         </div>
                         <button type="button" class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#add-category-btn">
