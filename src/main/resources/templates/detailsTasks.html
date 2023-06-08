@@ -58,30 +58,47 @@
                     </div>
                 </div>
             </form>
-            <!-- Modal -->
-            <div class="modal fade" id="delete-btn" tabindex="-1" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true" th:if="${taskById!=null}">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form th:action="@{'/delete-task'}" method="post">
-                            <input type="hidden" name="id" th:value="${taskById.id}">
-                            <input type="hidden" name="folder_id" th:value="${taskById.folder.id}">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                ARE YOU SURE?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button class="btn btn-danger">Save changes</button>
-                            </div>
-                        </form>
+                <!-- Modal -->
+                <div class="modal fade" id="delete-btn" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true" th:if="${taskById!=null}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form th:action="@{'/delete-task'}" method="post">
+                                <input type="hidden" name="id" th:value="${taskById.id}">
+                                <input type="hidden" name="folder_id" th:value="${taskById.folder.id}">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm delete</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ARE YOU SURE?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button class="btn btn-danger">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
             <h4 th:if="${taskById==null}" class="text-center">404 NOT FOUND</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-8 mx-auto">
+            <div class="mt-5">
+                <h3 class="text-center" >Comment Section:</h3>
+                <form th:action="@{'/add-comment'}" method="post">
+                    <input type="hidden" name="task_id" th:value="${taskById.id}">
+                    <textarea class="form-control" name="comment" placeholder="Insert text"></textarea>
+                    <button class="btn btn-sm btn-primary float-end mt-1 mb-2" style="width: 8rem; height: 30px">ADD COMMENT</button>
+                </form>
+                <textarea class="form-control mt-2" style="height: 10px"
+                          th:if="${comms.task.id == taskById.id}"
+                          th:each="comms : ${comments}"
+                          th:text="${comms.comment}" readonly></textarea>
+            </div>
         </div>
     </div>
 </div>

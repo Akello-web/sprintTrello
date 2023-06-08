@@ -1,5 +1,6 @@
 package kz.bitlab.sprint.trello.controller;
 
+import kz.bitlab.sprint.trello.model.Comments;
 import kz.bitlab.sprint.trello.model.Folders;
 import kz.bitlab.sprint.trello.model.TaskCategories;
 import kz.bitlab.sprint.trello.model.Tasks;
@@ -57,6 +58,7 @@ public class HomeController {
 
         Tasks tasks = taskService.getTask(id);
         model.addAttribute("taskById", tasks);
+        model.addAttribute("comments", commentsRepository.findAllByOrderByIdDesc());
         return "detailsTasks";
     }
 
@@ -75,6 +77,13 @@ public class HomeController {
         task.setFolder(folder);
         taskService.addTask(task);
         return "redirect:/details/" + folderId;
+    }
+    @PostMapping(value = "/add-comment")
+    public String addComment(Comments comment, @RequestParam(name = "task_id") Long taskId){
+        Tasks task = taskService.getTask(taskId);
+        comment.setTask(task);
+        commentsRepository.save(comment);
+        return "redirect:/detailsTasks/" + taskId;
     }
 
     @PostMapping(value = "/save-task")
