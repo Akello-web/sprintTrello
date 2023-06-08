@@ -134,6 +134,11 @@ public class HomeController {
         taskService.deleteTask(id);
         return "redirect:/details/" + folderId;
     }
+    @PostMapping(value = "/delete-folder")
+    public String deleteFolder(@RequestParam(name = "folder_id") Long id){
+        folderService.deleteFolderById(id);
+        return "redirect:/";
+    }
 
     @PostMapping(value = "/delete-category")
     public String deleteCategory(@RequestParam(name = "id") Long id){

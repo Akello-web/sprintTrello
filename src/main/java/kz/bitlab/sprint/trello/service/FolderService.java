@@ -27,4 +27,9 @@ public class FolderService {
         return folderRepository.findById(id).orElse(null);
     }
 
+    public void deleteFolderById(Long id){
+        folderRepository.deleteTasksByFolderId(id);
+        folderRepository.deleteFolderById(id);
+    }
+
 }

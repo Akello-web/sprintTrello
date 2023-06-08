@@ -50,6 +50,33 @@
                         </button>
                         </div>
 
+                        <div class="float-end">
+                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete-folder-btn">DELETE FOLDER</button>
+                        </div>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="delete-folder-btn" tabindex="-1" aria-labelledby="exampleModalLabelOne"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form th:action="@{'/delete-folder'}" method="post">
+                                        <input type="hidden" name="folder_id" th:value="${folderById.id}">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabelOne">Confirm delete</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            DO YOU WANT TO REMOVE THIS FOLDER WITH ALL TASKS?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button class="btn btn-danger">REMOVE</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
